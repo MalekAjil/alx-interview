@@ -5,7 +5,7 @@
 def DFS(boxes, box, visited):
     """Dipth First Algorithm"""
     for x in box:
-        if visited.count(x) <= 0:
+        if x < len(boxes) and visited.count(x) == 0:
             visited.append(x)
             DFS(boxes, boxes[x], visited)
 
