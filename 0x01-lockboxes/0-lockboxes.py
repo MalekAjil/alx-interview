@@ -12,7 +12,7 @@ def DFS(boxes, box, visited):
 
 def canUnlockAll(boxes):
     """Return True if all boxes can be opened, else return False"""
-    visited = []
+    visited = [0]
     DFS(boxes, boxes[0], visited)
     if len(boxes) == len(visited):
         return True
