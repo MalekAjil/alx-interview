@@ -3,11 +3,12 @@
 import sys
 
 
-if len(sys.args) != 2 or sys.args[1] is None:
+if len(sys.argv) != 2 or sys.argv[1] is None:
     print("Usage: nqueens N")
     exit(1)
-N = sys.args[1]
-if type(N) is not int:
+try:
+    N = int(sys.argv[1])
+except:
     print("N must be a number")
     exit(1)
 if N < 4:
