@@ -16,6 +16,7 @@ def is_safe(board, row, col):
             return False
     return True
 
+
 def solve_nqueens(board, col):
     """Use backtracking to find all solutions"""
     if col >= len(board):
@@ -28,6 +29,7 @@ def solve_nqueens(board, col):
             res = solve_nqueens(board, col + 1) or res
             board[i][col] = 0
     return res
+
 
 def print_solution(board):
     """Print the board configuration"""
@@ -44,11 +46,11 @@ if len(sys.argv) != 2 or sys.argv[1] is None:
     sys.exit(1)
 try:
     N = int(sys.argv[1])
-except:
+except ValueError:
     print("N must be a number")
     sys.exit(1)
 if N < 4:
     print("N must be at least 4")
     sys.exit(1)
-board = [[0 for _ in range (N)] for - in range(N)]
+board = [[0 for _ in range(N)] for _ in range(N)]
 solve_nqueens(board, 0)
