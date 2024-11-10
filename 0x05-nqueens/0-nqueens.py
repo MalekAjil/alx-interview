@@ -25,7 +25,8 @@ def solve_nqueens(board, col):
     for i in range(len(board)):
         if is_safe(board, i, col):
             board[i][col] = 1
-            res = solve_nqueens(board, col + 1) or res board[i][col] = 0
+            res = solve_nqueens(board, col + 1) or res
+            board[i][col] = 0
     return res
 
 def print_solution(board):
