@@ -1,41 +1,42 @@
-#!/usr/bin/env python3
-"""
-Script to print all characters of a Star Wars movie
-"""
+#!/usr/bin/node
+/**
+ * Script to print all characters of a Star Wars movie
+ */
 
-import sys
-import requests
+const request = require('request');
 
-def get_characters(movie_id):
-    """Fetch and print characters of a Star Wars movie"""
-    url = f"https://swapi.dev/api/films/{movie_id}/"
-    response = requests.get(url)
-    if response.status_code != 200:
-        print("Error fetching data from the API")
-        return
+if (process.argv.length !== 3) {
+  console.log('Usage: ./0-starwars_characters.js <Movie ID>');
+  process.exit(1);
+}
 
-    data = response.json()
-    characters = data.get("characters", [])
-    for character_url in characters:
-        character_response = requests.get(character_url)
-        if character_response.status_code == 200:
-            character_data = character_response.json()
-            print(character_data.get("name"))
+const movieId = process.argv[2];
+const url = `https://swapi.dev/api/films/${movieId}/`;
 
-def main():
-    """Main function to handle input and start fetching characters"""
-    if len(sys.argv) != 2:
-        print("Usage: Movie ID")
-        sys.exit(1)
+request(url, (error, response, body) => {
+  if (error) {
+    console.error('Error:', error);
+    return;
+  }
+  if (response.statusCode !== 200) {
+    console.error('Failed to fetch data from the API');
+    return;
+  }
 
-    try:
-        movie_id = int(sys.argv[1])
-    except ValueError:
-        print("Movie ID must be a number")
-        sys.exit(1)
+  const data = JSON.parse(body);
+  const characters = data.characters;
 
-    get_characters(movie_id)
-
-if __name__ == "__main__":
-    main()
+  characters.forEach(characterUrl => {
+    request(characterUrl, (error, response, body) => {
+      if (error) {
+        console.error('Error:', error);
+        return;
+      }
+      if (response.statusCode === 200) {
+        const characterData = JSON.parse(body);
+        console.log(characterData.name);
+      }
+    });
+  });
+});
 
