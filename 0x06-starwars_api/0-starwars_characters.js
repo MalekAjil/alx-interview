@@ -26,16 +26,26 @@ request(url, (error, response, body) => {
   const data = JSON.parse(body);
   const characters = data.characters;
 
-  characters.forEach(characterUrl => {
-    request(characterUrl, (error, response, body) => {
-      if (error) {
-        console.error('Error:', error);
-        return;
-      }
-      if (response.statusCode === 200) {
-        const characterData = JSON.parse(body);
-        console.log(characterData.name);
-      }
+  const characterPromises = characters.map(characterUrl => {
+    return new Promise((resolve, reject) => {
+      request(characterUrl, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else if (response.statusCode === 200) {
+          const characterData = JSON.parse(body);
+          resolve(characterData.name);
+        } else {
+          reject(new Error('Failed to fetch character data'));
+        }
+      });
     });
   });
+
+  Promise.all(characterPromises)
+    .then(characterNames => {
+      characterNames.forEach(name => console.log(name));
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 });
