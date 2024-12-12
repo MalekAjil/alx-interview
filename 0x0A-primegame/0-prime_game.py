@@ -5,11 +5,11 @@
 def isWinner(x, nums):
     """Return: name of the player that won the most rounds"""
     def sieve(n):
-        """Generate a list of primes up to n using the Sieve of Eratosthenes."""
+        """Generate a list of primes up to n using the Sieve of Eratosthenes"""
         is_prime = [True] * (n + 1)
         p = 2
         while (p * p <= n):
-            if (is_prime[p] == True):
+            if (is_prime[p]):
                 for i in range(p * p, n + 1, p):
                     is_prime[i] = False
             p += 1
